@@ -40,7 +40,7 @@ export default function ChatBox({ placeholder }: { placeholder?: string }) {
 				placeholder={placeholder || "Ask AI to generate form..."}
 				className='mb-4'
 			/>
-			<Button className="cursor-pointer" disabled={isLoading} type='submit'>
+			<Button title="Send" className="cursor-pointer" disabled={isLoading} type='submit'>
 				<SendHorizonal />
 			</Button>
 		</form>

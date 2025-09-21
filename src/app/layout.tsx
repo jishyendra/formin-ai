@@ -4,20 +4,20 @@ import "../index.css";
 import Providers from "@/components/providers";
 import Header from "@/components/header";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
-	subsets: ["latin"],
-});
+// const geistSans = Geist({
+// 	variable: "--font-geist-sans",
+// 	subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
-	subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+// 	variable: "--font-geist-mono",
+// 	subsets: ["latin"],
+// });
 
-export const metadata: Metadata = {
-	title: "formin-ai",
-	description: "formin-ai",
-};
+// export const metadata: Metadata = {
+// 	title: "formin-ai",
+// 	description: "formin-ai",
+// };
 
 export default function RootLayout({
 	children,
@@ -25,12 +25,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang='en' suppressHydrationWarning>
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				// className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className='antialiased'
 			>
 				<Providers>
-					<div className="grid grid-rows-[auto_1fr] h-svh">
+					<div className='grid grid-rows-[auto_1fr] h-svh'>
 						<Header />
 						{children}
 					</div>
