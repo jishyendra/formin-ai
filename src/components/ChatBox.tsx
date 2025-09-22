@@ -1,11 +1,11 @@
 "use client";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
-import type { Form } from "@/lib/types";
-import axios from "axios";
 import { Button } from "./ui/button";
 import { useFormStore } from "@/store/store";
 import { SendHorizonal } from "lucide-react";
+import { generateForm } from "@/lib/gemini";
+import LoadingComponent from "./LoadingComponent";
 
 export default function ChatBox({ placeholder }: { placeholder?: string }) {
 	const [query, setQuery] = useState("");
@@ -16,16 +16,8 @@ export default function ChatBox({ placeholder }: { placeholder?: string }) {
 		e.preventDefault();
 		setIsLoading(true);
 		setFormStatus("loading");
-		await axios
-			.post("/api/form", { query })
-			.then((res) => {
-				setForm(res.data as Form);
-				setFormStatus("success");
-			})
-			.catch((error) => {
-				setFormStatus("error");
-				console.log("Error getting form", error);
-			});
+		const form = await generateForm(query);
+		setForm(form);
 		setIsLoading(false);
 	}
 
@@ -40,8 +32,13 @@ export default function ChatBox({ placeholder }: { placeholder?: string }) {
 				placeholder={placeholder || "Ask AI to generate form..."}
 				className='mb-4'
 			/>
-			<Button title="Send" className="cursor-pointer" disabled={isLoading} type='submit'>
-				<SendHorizonal />
+			<Button
+				title='Send'
+				className='cursor-pointer'
+				disabled={isLoading}
+				type='submit'
+			>
+				{isLoading ? <LoadingComponent /> : <SendHorizonal />}
 			</Button>
 		</form>
 	);
