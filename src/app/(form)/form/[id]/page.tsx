@@ -63,8 +63,8 @@ export default function SubmitPage() {
 			<form ref={formRef} onSubmit={submit} className='p-2'>
 				<h1 className='font-bold text-xl'>{form.name}</h1>
 				<p>{form.description}</p>
-				{form.fields_json.map((field, idx) => (
-					<FieldComponent field={field} key={idx} />
+				{form.fields_json.map((field) => (
+					<FieldComponent field={field} key={crypto.randomUUID()} />
 				))}
 				<button
 					type='submit'

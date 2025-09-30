@@ -8,6 +8,7 @@ export const connection = await mongoose.connect(
 	// 	pass: "Anirudh@8071",
 	// }
 );
+export const client = connection.connection.getClient();
 
 export const forms = new mongoose.Schema({
 	formId: {
@@ -46,11 +47,12 @@ const Forms = mongoose.models.Forms || mongoose.model("Forms", forms);
 export { Forms };
 
 export async function createForm(form: Form) {
+	"use server";
 	const doc = await Forms.insertOne({
 		formId: crypto.randomUUID() as string,
 		name: form.name,
 		description: form.description,
-		fields: form.fields,
+		fields: form.fields_json,
 		data: [],
 		author: "1",
 	});

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Forms } from "@/app/db.ts";
+import { Forms } from "@/lib/db";
 
 interface GETProps {
 	params: {

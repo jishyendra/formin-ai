@@ -11,10 +11,25 @@ type Store = {
 };
 
 export const useFormStore = create<Store>()((set) => ({
-	form: { name: "", description: "", fields_json: [] },
+	form: { name: "", description: "", fields_json: [], author: "" },
 	setForm: (form) => set({ form }),
 	// formFields: [],
 	// setFormFields: (fields) => set({ formFields: fields }),
 	formStatus: "idle",
 	setFormStatus: (status) => set({ formStatus: status }),
+}));
+
+type User = {
+	username: string;
+	id: string;
+};
+
+interface AuthStore {
+	auth: User;
+	setAuth: (usr: User) => void;
+}
+
+export const authStore = create<AuthStore>()((set) => ({
+	auth: { username: "", id: "" },
+	setAuth: (user) => set({ auth: user }),
 }));

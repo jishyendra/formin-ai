@@ -1,25 +1,28 @@
 "use client";
 import React from "react";
-import axios from "axios";
+// import axios from "axios";
 import Link from "next/link";
 import type { Field, Form } from "@/lib/types";
 import { FieldComponent } from "./FieldComponent";
+import EditFieldComponent from "./EditField";
 import {
 	Button,
-	Dialog,
-	DialogContent,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+	// Dialog,
+	// DialogContent,
+	// DialogHeader,
+	// DialogTitle,
+	// DialogTrigger,
 } from "@/components/ui";
 
 import { useFormStore } from "@/store/store";
 import { toast } from "sonner";
-import ChatBox from "./ChatBox";
+// import ChatBox from "./ChatBox";
 
 type Props = {
 	form: Form;
 };
+
+function saveForm() {}
 
 export default function FormPreview({ form }: Props) {
 	return (
@@ -36,7 +39,12 @@ export default function FormPreview({ form }: Props) {
 				})}
 
 				<Link href='/dashboard/form/123'>
-					<Button className='w-full cursor-pointer mt-8 mb-8'>Finish</Button>
+					<Button
+						className='w-full cursor-pointer mt-8 mb-8'
+						onClick={saveForm}
+					>
+						Finish
+					</Button>
 				</Link>
 			</form>
 		</>
@@ -71,40 +79,5 @@ function FieldWrapper({ children, field, idx }: FieldWrapperProps) {
 				<button onClick={removeField}>Remove</button>
 			</div>
 		</div>
-	);
-}
-
-function EditFieldComponent({ field, idx }: { field: Field; idx: number }) {
-	const { form, setForm } = useFormStore((state) => state);
-
-	async function modifyFieldWithAi() {
-		await axios
-			.post("/api/field/", field)
-			.then((res) => {
-				setForm({
-					...form,
-					fields_json: form.fields_json.map((field, index) =>
-						index === idx ? res.data : field
-					),
-				});
-			})
-			.catch((err) => {
-				toast("Can`t modify, Please try again.");
-			});
-	}
-	return (
-		<Dialog>
-			<DialogTrigger>Modify</DialogTrigger>
-			<DialogContent>
-				<DialogHeader>
-					<DialogTitle>Customise field</DialogTitle>
-				</DialogHeader>
-				<p className='text-gray-400'>Field preview</p>
-				<div className='p-4 rounded-l border shadow-2xl'>
-					<FieldComponent field={field} />
-				</div>
-				<ChatBox placeholder='Ask ai to modify title, prompt, options..' />
-			</DialogContent>
-		</Dialog>
 	);
 }

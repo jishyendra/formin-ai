@@ -9,21 +9,35 @@ export interface Field {
 export interface Form {
 	name: string;
 	description: string;
-	fields: Field[];
+	fields_json: Field[];
 	author: string;
 }
 
-export enum FieldType {
-	Name = "name",
-	Email = "email",
+export type FieldType =
+	| "text"
+	| "email"
+	| "number"
+	| "mobile"
+	| "link"
+	| "longtext"
+	| "select"
+	| "date"
+	| "radio"
+	| "checkbox"
+	| "file";
 
-	Phone = "phone",
-	Numeric = "number",
+// export enum FieldType {
+// 	// "text | email | number | mobile | link | longtext | select | date | radio | checkbox | file",
+// 	Name = "name",
+// 	Email = "email",
 
-	Default = "text)",
+// 	Phone = "phone",
+// 	Numeric = "number",
 
-	Url = "url",
-	File = "file",
+// 	Default = "text)",
 
-	Country = "Country",
-}
+// 	Url = "url",
+// 	File = "file",
+
+// 	Country = "Country",
+// }

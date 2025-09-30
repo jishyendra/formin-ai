@@ -76,7 +76,7 @@ function SelectBox({ field: f }: InputBoxProps) {
 				</SelectTrigger>
 				<SelectContent>
 					{f.options?.map((val, idx) => (
-						<SelectItem key={val + idx} value={val}>
+						<SelectItem key={crypto.randomUUID()} value={val}>
 							{val}
 						</SelectItem>
 					))}

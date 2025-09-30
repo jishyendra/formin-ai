@@ -14,7 +14,7 @@ export default function Header() {
 				<nav className='flex gap-4 text-lg w-full'>
 					{links.map(({ to, label }) => {
 						return (
-							<Link key={to} href={to}>
+							<Link key={crypto.randomUUID()} href={to}>
 								{label}
 							</Link>
 						);

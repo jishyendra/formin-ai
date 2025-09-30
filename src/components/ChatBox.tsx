@@ -5,7 +5,7 @@ import { Button } from "./ui/button";
 import { useFormStore } from "@/store/store";
 import { SendHorizonal } from "lucide-react";
 import { generateForm } from "@/lib/gemini";
-import LoadingComponent from "./LoadingComponent";
+import  Loader from "@/components/loader";
 
 export default function ChatBox({ placeholder }: { placeholder?: string }) {
 	const [query, setQuery] = useState("");
@@ -17,7 +17,9 @@ export default function ChatBox({ placeholder }: { placeholder?: string }) {
 		setIsLoading(true);
 		setFormStatus("loading");
 		const form = await generateForm(query);
+    console.log("AI form recieved:",form);
 		setForm(form);
+    setFormStatus("success");
 		setIsLoading(false);
 	}
 
@@ -38,7 +40,7 @@ export default function ChatBox({ placeholder }: { placeholder?: string }) {
 				disabled={isLoading}
 				type='submit'
 			>
-				{isLoading ? <LoadingComponent /> : <SendHorizonal />}
+				{isLoading ? <Loader/> : <SendHorizonal />}
 			</Button>
 		</form>
 	);

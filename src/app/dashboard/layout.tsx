@@ -36,10 +36,10 @@ const ListForms = () => {
 	const forms = [1, 2, 3, 4, 5];
 	return (
 		<div className='grid gap-2 w-full'>
-			{forms.map((form, id) => (
+			{forms.map((form) => (
 				<Link
 					className='w-full overflow-x-hidden'
-					key={id}
+					key={crypto.randomUUID()}
 					href={`/dashboard/form/${form}`}
 				>
 					Form {form}

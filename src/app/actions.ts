@@ -1,6 +1,6 @@
 "use server";
 import type { Form } from "@/lib/types.ts";
-import { createForm, Forms } from "./db.ts";
+import { createForm, Forms } from "../lib/db.ts";
 
 export async function addNewForm(form: Form) {
 	const formId = await createForm(form);
