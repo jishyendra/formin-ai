@@ -1,14 +1,46 @@
 import type { Form } from "@/lib/types";
 import mongoose from "mongoose";
 
-export const connection = await mongoose.connect(
-	process.env.DATABASE_URL as string
-	// {
-	// 	user: "Anirudh",
-	// 	pass: "Anirudh@8071",
-	// }
-);
-export const client = connection.connection.getClient();
+// export const connection = await mongoose.connect(
+// 	process.env.DATABASE_URL as string
+// 	// {
+// 	// 	user: "Anirudh",
+// 	// 	pass: "Anirudh@8071",
+// 	// }
+// );
+// lib/db.ts
+
+let isConnected = false;
+
+export async function connectDB() {
+	if (process.env.NEXT_PHASE === "phase-production-build") {
+		console.log("Skipping DB connection during build");
+		return null;
+	}
+
+	if (isConnected && mongoose.connection.readyState === 1) {
+		return mongoose.connection;
+	}
+	try {
+		const connection = await mongoose.connect(
+			process.env.DATABASE_URL as string
+		);
+		isConnected = true;
+		console.log("MongoDB connected successfully");
+		return connection.connection;
+	} catch (error) {
+		console.error("MongoDB connection error:", error);
+		throw error;
+	}
+}
+
+export async function getMongoClient() {
+	const conn = await connectDB();
+	return {
+		client: conn?.getClient(),
+		db: conn?.db,
+	};
+}
 
 export const forms = new mongoose.Schema({
 	formId: {
@@ -29,9 +61,13 @@ export const forms = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
-	author: {
+	authorId: {
 		type: String,
 		require: true,
+	},
+	authorName: {
+		type: String,
+		required: true,
 	},
 	accepts: {
 		type: Boolean,
@@ -46,15 +82,15 @@ export const forms = new mongoose.Schema({
 const Forms = mongoose.models.Forms || mongoose.model("Forms", forms);
 export { Forms };
 
-export async function createForm(form: Form) {
-	"use server";
+export async function createForm(form: Form,authorId:string,authorName:string) {
 	const doc = await Forms.insertOne({
 		formId: crypto.randomUUID() as string,
 		name: form.name,
 		description: form.description,
 		fields: form.fields_json,
 		data: [],
-		author: "1",
+		authorId,
+		authorName
 	});
 	if (doc.formId) doc.formId;
 	return null;

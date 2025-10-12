@@ -14,10 +14,10 @@ import Header from "@/components/header";
 // 	subsets: ["latin"],
 // });
 
-// export const metadata: Metadata = {
-// 	title: "formin-ai",
-// 	description: "formin-ai",
-// };
+export const metadata: Metadata = {
+	title: "formin-ai",
+	description: "formin-ai",
+};
 
 export default function RootLayout({
 	children,

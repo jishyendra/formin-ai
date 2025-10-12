@@ -2,7 +2,7 @@
 import type { Form } from "@/lib/types.ts";
 import { createForm, Forms } from "../lib/db.ts";
 
-export async function addNewForm(form: Form) {
+export async function addNewForm(form: Form, userId: string) {
 	const formId = await createForm(form);
 	if (!formId) return { error: "Error saving form fields to db", status: 400 };
 	return { message: "Form created", formId, status: 201 };

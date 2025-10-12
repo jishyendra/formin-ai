@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-// import axios from "axios";
+import axios, { toFormData } from "axios";
 import Link from "next/link";
 import type { Field, Form } from "@/lib/types";
 import { FieldComponent } from "./FieldComponent";
@@ -16,15 +16,37 @@ import {
 
 import { useFormStore } from "@/store/store";
 import { toast } from "sonner";
+import { useSession } from "@/lib/auth-client";
 // import ChatBox from "./ChatBox";
 
 type Props = {
 	form: Form;
 };
 
-function saveForm() {}
+async function saveForm() {
+	toast.loading("Saving form...");
+	try {
+		const form = useFormStore.getState().form;
+		const res = await axios.post("/api/form/create", form, {
+			headers: { "Content-Type": "application/json" },
+		});
+		if (res.status === 201) {
+			toast.success("Form created!");
+			useFormStore.setState({
+				form: { name: "", description: "", fields_json: [], author: "" },
+			});
+		} else {
+			toast.error("Error creating form");
+		}
+	} catch (error) {
+		toast.error("Error creating form");
+	}
+}
 
 export default function FormPreview({ form }: Props) {
+	const { data, error } = useSession();
+	// const { user, session } = data!;
+
 	return (
 		<>
 			<form className='w-full max-w-2xl mx-auto p-4'>

@@ -1,5 +1,6 @@
 import type { Form, Field } from "@/lib/types";
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 type Store = {
 	form: Form;
@@ -10,26 +11,19 @@ type Store = {
 	setFormStatus: (status: "idle" | "loading" | "error" | "success") => void;
 };
 
-export const useFormStore = create<Store>()((set) => ({
-	form: { name: "", description: "", fields_json: [], author: "" },
-	setForm: (form) => set({ form }),
-	// formFields: [],
-	// setFormFields: (fields) => set({ formFields: fields }),
-	formStatus: "idle",
-	setFormStatus: (status) => set({ formStatus: status }),
-}));
-
-type User = {
-	username: string;
-	id: string;
-};
-
-interface AuthStore {
-	auth: User;
-	setAuth: (usr: User) => void;
-}
-
-export const authStore = create<AuthStore>()((set) => ({
-	auth: { username: "", id: "" },
-	setAuth: (user) => set({ auth: user }),
-}));
+export const useFormStore = create<Store>()(
+	persist(
+		(set) => ({
+			form: { name: "", description: "", fields_json: [], author: "" },
+			setForm: (form) => set({ form }),
+			// formFields: [],
+			// setFormFields: (fields) => set({ formFields: fields }),
+			formStatus: "idle",
+			setFormStatus: (status) => set({ formStatus: status }),
+		}),
+		{
+			name: "create-form-storage",
+			storage: createJSONStorage(() => sessionStorage),
+		}
+	)
+);

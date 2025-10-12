@@ -27,6 +27,7 @@ export default function DashboardLayout({ children }: Props) {
 				<FormSidebar />
 				<SidebarTrigger></SidebarTrigger>
 				{children}
+
 			</SidebarProvider>
 		</div>
 	);
@@ -59,6 +60,7 @@ const FormSidebar = () => {
 				<SidebarGroup>
 					<SidebarGroupContent>
 						<ListForms />
+
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>
