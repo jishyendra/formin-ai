@@ -15,6 +15,7 @@ import {
 	SidebarMenuItem,
 	SidebarHeader,
 } from "@/components/ui/sidebar";
+import NewFormBtn from "@/components/NewFormBtn";
 
 type Props = {
 	children: ReactNode;
@@ -23,44 +24,47 @@ type Props = {
 export default function DashboardLayout({ children }: Props) {
 	return (
 		<div>
-			<SidebarProvider>
+			{/* <SidebarProvider>
 				<FormSidebar />
-				<SidebarTrigger></SidebarTrigger>
-				{children}
-
-			</SidebarProvider>
+				<SidebarTrigger></SidebarTrigger> */}
+			{children}
+			{/* </SidebarProvider> */}
 		</div>
 	);
 }
 
-const ListForms = () => {
-	const forms = [1, 2, 3, 4, 5];
-	return (
-		<div className='grid gap-2 w-full'>
-			{forms.map((form) => (
-				<Link
-					className='w-full overflow-x-hidden'
-					key={crypto.randomUUID()}
-					href={`/dashboard/form/${form}`}
-				>
-					Form {form}
-				</Link>
-			))}
-		</div>
-	);
-};
+// const ListForms = () => {
+// 	const forms = [1, 2, 3, 4, 5];
+// 	return (
+// 		<>
+// 			{forms.map((form) => (
+// 				<Link
+// 					className='w-full overflow-x-hidden'
+// 					key={crypto.randomUUID()}
+// 					href={`/dashboard/form/${form}`}
+// 				>
+// 					Form {form}
+// 				</Link>
+// 			))}
+// 		</>
+// 	);
+// };
 
 const FormSidebar = () => {
 	return (
-		<Sidebar className=''>
+		<Sidebar>
 			<SidebarHeader>
 				<h1>Forms</h1>
 			</SidebarHeader>
-			<SidebarContent className='pl-4'>
+			<SidebarContent className='pl-4 flex pb-8'>
+				<SidebarGroup className='flex-1'>
+					<SidebarGroupContent className='flex flex-col justify-between'>
+						{/* <ListForms /> */}
+					</SidebarGroupContent>
+				</SidebarGroup>
 				<SidebarGroup>
-					<SidebarGroupContent>
-						<ListForms />
-
+					<SidebarGroupContent className='flex flex-col justify-between'>
+						<NewFormBtn />
 					</SidebarGroupContent>
 				</SidebarGroup>
 			</SidebarContent>

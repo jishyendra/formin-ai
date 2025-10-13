@@ -14,7 +14,7 @@ type Store = {
 export const useFormStore = create<Store>()(
 	persist(
 		(set) => ({
-			form: { name: "", description: "", fields_json: [], author: "" },
+			form: { name: "", description: "", fields: [], author: "" },
 			setForm: (form) => set({ form }),
 			// formFields: [],
 			// setFormFields: (fields) => set({ formFields: fields }),

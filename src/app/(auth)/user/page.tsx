@@ -24,18 +24,15 @@ export default function Login() {
 	if (isPending) {
 		return <Loader></Loader>;
 	}
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
 	return (
-		<div>
+		<div className="flex justify-center items-center">
 			{data ? (
 				<div>
 					<h1>Welcome, {data.user?.name}</h1>
 					<p>Email: {data.user?.email}</p>
 				</div>
 			) : (
-				<>
+				<div className="align-center text-center">
 					<h1>User is not logged in.</h1>
 					<Button
 						onClick={async () => await login()}
@@ -44,7 +41,7 @@ export default function Login() {
 					>
 						Login
 					</Button>
-				</>
+				</div>
 			)}
 		</div>
 	);

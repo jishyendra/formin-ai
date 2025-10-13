@@ -9,7 +9,7 @@ export interface Field {
 export interface Form {
 	name: string;
 	description: string;
-	fields_json: Field[];
+	fields: Field[];
 	author: string;
 }
 

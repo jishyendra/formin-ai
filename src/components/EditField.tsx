@@ -72,10 +72,10 @@ function EditField(props: EditFieldProps) {
 	}
 	function handleSaveField(e: FormEvent, idx: number) {
 		e.preventDefault();
-		const fields = form.fields_json;
+		const fields = form.fields;
 		const newField = { name, type, prompt, required, options };
 		fields[idx] = newField;
-		setForm({ ...form, fields_json: fields });
+		setForm({ ...form, fields: fields });
 	}
 
 	return (

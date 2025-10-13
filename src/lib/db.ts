@@ -47,7 +47,7 @@ export const forms = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	title: { type: String, required: true },
+	name: { type: String, required: true },
 	description: { type: String, required: true },
 	fields: {
 		type: Object,
@@ -82,16 +82,20 @@ export const forms = new mongoose.Schema({
 const Forms = mongoose.models.Forms || mongoose.model("Forms", forms);
 export { Forms };
 
-export async function createForm(form: Form,authorId:string,authorName:string) {
+export async function createForm(
+	form: Form,
+	authorId: string,
+	authorName: string
+) {
 	const doc = await Forms.insertOne({
 		formId: crypto.randomUUID() as string,
 		name: form.name,
 		description: form.description,
-		fields: form.fields_json,
+		fields: form.fields,
 		data: [],
 		authorId,
-		authorName
+		authorName,
 	});
-	if (doc.formId) doc.formId;
-	return null;
+	console.log("Inserted document:", doc);
+	return doc._id.toString();
 }

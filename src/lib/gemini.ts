@@ -12,15 +12,14 @@ export async function generateForm(
 	// mode: "generate" | "modify"
 ): Promise<Form & any> {
 	console.log("API Call: Create Form:", user_query);
-	// const { text, content, reasoning } = await generateText({
-	// 	model: google("gemini-2.5-flash"),
-	// 	system: GENERATE_PROMPT,
-	// 	prompt: `${user_query}\n data:${form}`,
-	// });
+	const { text } = await generateText({
+		model: google("gemini-2.5-flash"),
+		system: GENERATE_PROMPT,
+		prompt: `${user_query}\n data:${form}`,
+	});
 
-	const parsed = parseForm(dummyForm);
+	// const parsed = parseForm(dummyForm);
+	const parsed = parseForm(text);
 	console.log("AI form :", parsed);
-	// console.log("AI content", content);
-	// console.log("AI reasoning", reasoning);
 	return parsed;
 }

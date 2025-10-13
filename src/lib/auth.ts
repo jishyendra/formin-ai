@@ -27,9 +27,5 @@ async function initAuth() {
 	}
 }
 
-export async function getAuth() {
-	if (!authInstance) {
-		await initAuth();
-	}
-	return authInstance;
-}
+
+export const auth = await initAuth();

@@ -1,7 +1,7 @@
 "use client";
 import FormPreview from "@/components/FormPreview";
 import HeroSection from "@/components/HeroSection";
-import LoadingComponent from "@/components/LoadingComponent";
+import Loader from "@/components/loader";
 import { useFormStore } from "@/store/store";
 
 export default function CreatePage() {
@@ -9,7 +9,7 @@ export default function CreatePage() {
 
 	switch (formStatus) {
 		case "loading":
-			return <LoadingComponent />;
+			return <Loader />;
 		case "success":
 			return <FormPreview form={form} />;
 		default:

@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { Forms } from "@/lib/db";
 
 interface GETProps {
-	params: {
+	params: Promise<{
 		id: string;
-	};
+	}>;
 }
 
 export async function GET(req: NextRequest, { params }: GETProps) {
@@ -13,13 +13,16 @@ export async function GET(req: NextRequest, { params }: GETProps) {
 		if (!id) {
 			throw Error("Form not found");
 		}
-		const form = await Forms.findOne({ formId: id }, "formId fields author");
+
+		const form = await Forms.findById(id);
+
 		if (!form) {
 			throw Error("Form not found");
 		}
-		return NextResponse.json({form }, { status: 200 });
+
+		return NextResponse.json({ form }, { status: 200 });
 	} catch (error) {
-    console.log(error)
-		return NextResponse.json({ error}, { status: 400 });
+		console.log(error);
+		return NextResponse.json({ error }, { status: 400 });
 	}
 }

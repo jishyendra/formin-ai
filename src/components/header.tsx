@@ -2,44 +2,26 @@
 import Link from "next/link";
 import { ModeToggle } from "./mode-toggle";
 import { useSession } from "@/lib/auth-client";
+import NewFormBtn from "./NewFormBtn";
 
 export default function Header() {
-	const llinks = [{ to: "/", label: "formin-ai" }] as const;
-
-	const rlinks = [
-		{ to: "/create", label: "New Form" },
-		{ to: "/dashboard", label: "Dashboard" },
-	] as const;
 	const { data: session } = useSession();
-
 	return (
 		<div>
 			<div className='flex flex-row items-center justify-between px-2 py-1'>
 				<nav className='flex justify-between text-lg w-full'>
 					<div className='flex gap-4 '>
-						{llinks.map(({ to, label }) => {
-							return (
-								<Link key={crypto.randomUUID()} href={to}>
-									{label}
-								</Link>
-							);
-						})}
+						<Link href='/'>formin-ai</Link>
 					</div>
-					<div className='flex gap-4 '>
+					<div className='flex gap-4 align-middle items-center '>
 						{session?.user ? (
-							rlinks.map(({ to, label }) => {
-								return (
-									<Link key={crypto.randomUUID()} href={to}>
-										{label}
-									</Link>
-								);
-							})
+							<>
+								<NewFormBtn />
+								<Link href='/dashboard'>Dashboard</Link>
+							</>
 						) : (
-							<Link key={crypto.randomUUID()} href="/user">
-								Login
-							</Link>
+							<Link href='/user'>Login</Link>
 						)}
-
 						<div className='flex items-center gap-2'>
 							<ModeToggle />
 						</div>

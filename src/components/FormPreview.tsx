@@ -1,7 +1,5 @@
 "use client";
 import React from "react";
-import axios, { toFormData } from "axios";
-import Link from "next/link";
 import type { Field, Form } from "@/lib/types";
 import { FieldComponent } from "./FieldComponent";
 import EditFieldComponent from "./EditField";
@@ -16,59 +14,51 @@ import {
 
 import { useFormStore } from "@/store/store";
 import { toast } from "sonner";
-import { useSession } from "@/lib/auth-client";
-// import ChatBox from "./ChatBox";
+import { addNewForm } from "@/app/actions";
 
 type Props = {
 	form: Form;
 };
 
-async function saveForm() {
-	toast.loading("Saving form...");
+async function saveForm(form: any) {
 	try {
-		const form = useFormStore.getState().form;
-		const res = await axios.post("/api/form/create", form, {
-			headers: { "Content-Type": "application/json" },
-		});
+		console.log("formdata:",form);
+		const res = await addNewForm(form);
 		if (res.status === 201) {
 			toast.success("Form created!");
-			useFormStore.setState({
-				form: { name: "", description: "", fields_json: [], author: "" },
-			});
 		} else {
-			toast.error("Error creating form");
+			throw Error;
 		}
 	} catch (error) {
+		console.log(error);
 		toast.error("Error creating form");
 	}
 }
 
 export default function FormPreview({ form }: Props) {
-	const { data, error } = useSession();
-	// const { user, session } = data!;
-
+	const formdata = useFormStore.getState().form;
 	return (
 		<>
 			<form className='w-full max-w-2xl mx-auto p-4'>
 				<h2 className='text-2xl font-bold mb-4'>{form.name}</h2>
 				<p>{form.description}</p>
-				{form.fields_json.map((f, idx) => {
+				{form.fields.map((f, idx) => {
 					return (
 						<FieldWrapper key={crypto.randomUUID()} idx={idx} field={f}>
 							<FieldComponent field={f} />
 						</FieldWrapper>
 					);
 				})}
-
-				<Link href='/dashboard/form/123'>
-					<Button
-						className='w-full cursor-pointer mt-8 mb-8'
-						onClick={saveForm}
-					>
-						Finish
-					</Button>
-				</Link>
 			</form>
+			<Button
+			variant="default"
+				onClick={async () => await saveForm(formdata)}
+				className='w-full cursor-pointer mt-8 mb-8'
+			>
+				Save Form
+			</Button>
+			<Button variant="destructive" className="">Clear Form</Button>
+
 		</>
 	);
 }
@@ -88,7 +78,7 @@ function FieldWrapper({ children, field, idx }: FieldWrapperProps) {
 	function removeField() {
 		setForm({
 			...form,
-			fields_json: form.fields_json.filter((_, index) => index != idx),
+			fields: form.fields.filter((_, index) => index != idx),
 		});
 		toast(`Removed '${field.name}'`);
 	}
