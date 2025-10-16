@@ -53,7 +53,7 @@ export const forms = new mongoose.Schema({
 		type: Object,
 		required: true,
 	},
-	data: {
+	responses: {
 		type: [Object],
 		default: [],
 	},

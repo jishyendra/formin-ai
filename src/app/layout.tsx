@@ -31,10 +31,7 @@ export default function RootLayout({
 				className='antialiased'
 			>
 				<Providers>
-					<div className='grid grid-rows-[auto_1fr] h-svh'>
-						<Header />
-						{children}
-					</div>
+					<div className='grid grid-rows-[auto_1fr] h-svh'>{children}</div>
 				</Providers>
 			</body>
 		</html>
