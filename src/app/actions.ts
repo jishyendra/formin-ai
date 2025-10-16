@@ -22,14 +22,16 @@ export async function addNewForm(form: Form) {
 }
 export async function postResponse(formId: string, data: FormData) {
 	try {
-		const form = await Forms.findOne({ formId });
-		if (!form || form.archived || !form.accepts) {
+		const form = await Forms.findById(formId);
+		if (!form || form.archived || form.accepts === false) {
 			throw Error("Form is no longer taking responses");
 		}
 		console.log("user submiting response:", data);
 		await form.data.push(data);
+		await form.save();
 		return { success: true, status: 201 };
 	} catch (error) {
+		console.log(error);
 		return { error: "Error submitting", status: 400 };
 	}
 }

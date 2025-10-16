@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import Loader from "@/components/loader";
 import { postResponse } from "@/app/actions";
 import useSWR from "swr";
+import { Button } from "@/components/ui";
 
 type FormRes = Form & { _id?: string; author?: string };
 
@@ -19,7 +20,7 @@ export default function SubmitPage() {
 		axios.get(`${BASE_URL}/api/form/${id}`).then((res) => res.data);
 
 	const { data, error, isLoading } = useSWR(id, fetchForm);
-	const form = data?.form as FormRes;
+	const form = data as FormRes;
 	console.log(form);
 
 	const formRef = useRef(null);
@@ -29,13 +30,14 @@ export default function SubmitPage() {
 		try {
 			const formData = new FormData(formRef.current!);
 			if (!formData) throw Error("Form data invalid");
-			const status = await postResponse(form._id!, formData);
+			const status = await postResponse(form._id, formData);
 			if (status.error) {
 				throw Error((status.error as string) || "Error submitting form");
 			}
 			toast.success("Data submitted successfully");
 		} catch (error) {
-			toast.error("Data cannot be submitted!Pleas try later");
+			console.log(error);
+			toast.error("Data cannot be submitted!Please try later");
 		}
 	}
 
@@ -53,12 +55,13 @@ export default function SubmitPage() {
 				{Array.from(form.fields).map((field) => (
 					<FieldComponent field={field} key={crypto.randomUUID()} />
 				))}
-				<button
+				<Button
+					variant={"default"}
 					type='submit'
-					className='w-full py-2 font-semibold cursor-pointer'
+					className='w-full py-2 mt-3 font-semibold cursor-pointer border-2'
 				>
 					Submit
-				</button>
+				</Button>
 			</form>
 		</div>
 	);
