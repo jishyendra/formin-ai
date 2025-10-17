@@ -1,16 +1,14 @@
-import type { Field, Form } from "@/lib/types";
-import { FieldType } from "@/lib/types";
+import type { FieldType, FieldInputType } from "@/lib/validation";
 import { Input } from "./ui/input";
-import { Label } from "./ui/label";
 
 import { z } from "zod";
 import type { FieldValues, UseFormRegister } from "react-hook-form";
 
 type RegisterProp = UseFormRegister<FieldValues>;
 
-export const RenderField = (field: Field, register: RegisterProp) => {
+export const RenderField = (field: FieldType, register: RegisterProp) => {
 	switch (field.type) {
-		case FieldType.Email:
+		case "email":
 			return (
 				<Input
 					type='email'
@@ -26,7 +24,7 @@ export const RenderField = (field: Field, register: RegisterProp) => {
 					required={field.required}
 				/>
 			);
-		case FieldType.Numeric:
+		case "number":
 			return (
 				<Input
 					type='number'
@@ -42,7 +40,7 @@ export const RenderField = (field: Field, register: RegisterProp) => {
 					required={field.required}
 				/>
 			);
-		case FieldType.Url:
+		case "link":
 			return (
 				<Input
 					type='url'
@@ -58,7 +56,7 @@ export const RenderField = (field: Field, register: RegisterProp) => {
 					required={field.required}
 				/>
 			);
-		case FieldType.Phone:
+		case "mobile":
 			return (
 				<Input
 					type='tel'
@@ -74,7 +72,7 @@ export const RenderField = (field: Field, register: RegisterProp) => {
 					required={field.required}
 				/>
 			);
-		case FieldType.File:
+		case "file":
 			return (
 				<Input
 					type='file'

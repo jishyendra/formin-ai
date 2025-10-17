@@ -1,5 +1,5 @@
-import type { Form } from "@/lib/types";
 import mongoose from "mongoose";
+import type { FormType } from "@/lib/validation";
 
 // export const connection = await mongoose.connect(
 // 	process.env.DATABASE_URL as string
@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 // 	// 	pass: "Anirudh@8071",
 // 	// }
 // );
-// lib/db.ts
 
 let isConnected = false;
 
@@ -83,7 +82,7 @@ const Forms = mongoose.models.Forms || mongoose.model("Forms", forms);
 export { Forms };
 
 export async function createForm(
-	form: Form,
+	form: FormType,
 	authorId: string,
 	authorName: string
 ) {

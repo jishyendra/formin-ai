@@ -1,28 +1,21 @@
 "use client";
 import React from "react";
-import type { Field, Form } from "@/lib/types";
+import type { FieldType, FormType } from "@/lib/validation";
 import { FieldComponent } from "./FieldComponent";
 import EditFieldComponent from "./EditField";
-import {
-	Button,
-	// Dialog,
-	// DialogContent,
-	// DialogHeader,
-	// DialogTitle,
-	// DialogTrigger,
-} from "@/components/ui";
+import { Button } from "@/components/ui";
 
 import { useFormStore } from "@/store/store";
 import { toast } from "sonner";
 import { addNewForm } from "@/app/actions";
 
 type Props = {
-	form: Form;
+	form: FormType;
 };
 
 async function saveForm(form: any) {
 	try {
-		console.log("formdata:",form);
+		console.log("formdata:", form);
 		const res = await addNewForm(form);
 		if (res.status === 201) {
 			toast.success("Form created!");
@@ -36,7 +29,7 @@ async function saveForm(form: any) {
 }
 
 export default function FormPreview({ form }: Props) {
-	const formdata = useFormStore.getState().form;
+	const { form: formdata, resetForm } = useFormStore((state) => state);
 	return (
 		<>
 			<form className='w-full max-w-2xl mx-auto p-4'>
@@ -51,20 +44,21 @@ export default function FormPreview({ form }: Props) {
 				})}
 			</form>
 			<Button
-			variant="default"
+				variant='default'
 				onClick={async () => await saveForm(formdata)}
 				className='w-full cursor-pointer mt-8 mb-8'
 			>
 				Save Form
 			</Button>
-			<Button variant="destructive" className="">Clear Form</Button>
-
+			<Button onClick={() => resetForm()} variant='destructive' className=''>
+				Clear Form
+			</Button>
 		</>
 	);
 }
 
 type InputBoxProps = {
-	field: Field;
+	field: FieldType;
 };
 
 type FieldWrapperProps = InputBoxProps & {

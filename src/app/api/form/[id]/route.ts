@@ -28,7 +28,7 @@ export async function GET(req: NextRequest, { params }: GETProps) {
 		}
 		return NextResponse.json(
 			{
-				_id:form._id,
+				_id: form._id,
 				name: form.name,
 				description: form.description,
 				fields: form.fields,
@@ -38,6 +38,6 @@ export async function GET(req: NextRequest, { params }: GETProps) {
 		);
 	} catch (error) {
 		console.log(error);
-		return NextResponse.json({ error }, { status: 400 });
+		return NextResponse.json({ error:"Cannot retrieve form at the moment." }, { status: 400 });
 	}
 }

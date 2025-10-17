@@ -1,4 +1,4 @@
-import type { Field } from "@/lib/types";
+import type { FieldType } from "@/lib/validation";
 import {
 	Input,
 	RadioGroup,
@@ -14,10 +14,10 @@ import {
 } from "@/components/ui";
 
 type InputBoxProps = {
-	field: Field;
+	field: FieldType;
 };
 
-export const FieldComponent = ({ field: f }: { field: Field }) => {
+export const FieldComponent = ({ field: f }: { field: FieldType }) => {
 	switch (f.type) {
 		case "select":
 			return <SelectBox key={crypto.randomUUID()} field={f} />;
@@ -25,14 +25,6 @@ export const FieldComponent = ({ field: f }: { field: Field }) => {
 			return <RadioBox key={crypto.randomUUID()} field={f} />;
 		case "checkbox":
 			return <CheckBox key={crypto.randomUUID()} field={f} />;
-		case "submit":
-			return (
-				<Input
-					className='p-2 mx-auto mt-2'
-					type='submit'
-					key={crypto.randomUUID()}
-				/>
-			);
 		default:
 			return <InputBox key={crypto.randomUUID()} field={f} />;
 	}
@@ -46,6 +38,7 @@ function InputLabel({ field: f }: InputBoxProps) {
 		</Label>
 	);
 }
+
 function InputBox({ field: f }: InputBoxProps) {
 	return (
 		<>

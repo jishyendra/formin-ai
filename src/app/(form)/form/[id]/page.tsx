@@ -1,7 +1,6 @@
 "use client";
 import { useParams } from "next/navigation";
 import { FieldComponent } from "@/components/FieldComponent";
-import type { Form } from "@/lib/types";
 import { BASE_URL } from "@/lib/utils";
 import axios from "axios";
 import { type FormEvent, useRef } from "react";
@@ -11,17 +10,15 @@ import { postResponse } from "@/app/actions";
 import useSWR from "swr";
 import { Button } from "@/components/ui";
 
-type FormRes = Form & { _id?: string; author?: string };
+import type { FormResponse } from "@/lib/types/api";
 
 export default function SubmitPage() {
 	const { id } = useParams();
-
 	const fetchForm = (id: string) =>
 		axios.get(`${BASE_URL}/api/form/${id}`).then((res) => res.data);
 
 	const { data, error, isLoading } = useSWR(id, fetchForm);
-	const form = data as FormRes;
-	console.log(form);
+	const form = data as FormResponse;
 
 	const formRef = useRef(null);
 	async function submit(e: FormEvent<HTMLFormElement>) {

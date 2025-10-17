@@ -1,14 +1,13 @@
-import type { Form, Field } from "@/lib/types";
+import type { FormType } from "@/lib/validation";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 type Store = {
-	form: Form;
-	setForm: (form: Form) => void;
-	// formFields: Field[];
-	// setFormFields: (fields: Field[]) => void;
+	form: FormType;
+	setForm: (form: FormType) => void;
 	formStatus: "idle" | "loading" | "error" | "success";
 	setFormStatus: (status: "idle" | "loading" | "error" | "success") => void;
+	resetForm: () => void;
 };
 
 export const useFormStore = create<Store>()(
@@ -16,10 +15,13 @@ export const useFormStore = create<Store>()(
 		(set) => ({
 			form: { name: "", description: "", fields: [], author: "" },
 			setForm: (form) => set({ form }),
-			// formFields: [],
-			// setFormFields: (fields) => set({ formFields: fields }),
 			formStatus: "idle",
 			setFormStatus: (status) => set({ formStatus: status }),
+			resetForm: () =>
+				set({
+					form: { name: "", description: "", fields: [], author: "" },
+					formStatus: "idle",
+				}),
 		}),
 		{
 			name: "create-form-storage",

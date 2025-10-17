@@ -22,6 +22,7 @@ export async function addNewForm(form: Form) {
 		return { error: "Error creating form", status: 400 };
 	}
 }
+
 export async function postResponse(formId: string, data: FormData) {
 	try {
 		const form = await Forms.findById(formId);
@@ -38,13 +39,16 @@ export async function postResponse(formId: string, data: FormData) {
 	}
 }
 
-export async function modifyForm(form: Form) {
+export async function modifyForm(form: Form, formId: string) {
 	try {
-		return { success: true, status: 200 };
+		const updated = await Forms.findByIdAndUpdate(formId, form);
+		if (!updated) throw Error("Error updating form");
+		return { message: "Form updated", status: 200 };
 	} catch (error) {
 		return { error: "Error", status: 400 };
 	}
 }
+
 export async function getFormData(formId: string) {
 	const form = await Forms.findById(formId);
 	if (!form) {

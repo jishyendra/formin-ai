@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, type FormEvent } from "react";
-import type { FieldType, Field } from "@/lib/types";
+import type { FieldType, fieldInputSchema } from "@/lib/validation";
 import {
 	Label,
 	Input,
@@ -22,14 +22,12 @@ import {
 
 import { useFormStore } from "@/store/store";
 import { XIcon } from "lucide-react";
-import { FIELD_TYPES } from "@/lib/constants";
-import { setFlagsFromString } from "v8";
 
 export default function EditFieldComponent({
 	field,
 	idx,
 }: {
-	field: Field;
+	field: FieldType;
 	idx: number;
 }) {
 	const { setForm } = useFormStore((state) => state);
@@ -51,7 +49,7 @@ export default function EditFieldComponent({
 }
 
 type EditFieldProps = {
-	field: Field;
+	field: FieldType;
 	idx: number;
 };
 
@@ -62,7 +60,7 @@ function EditField(props: EditFieldProps) {
 	const [name, setName] = useState<string>(field.name);
 	const [prompt, setPrompt] = useState<string>(field.prompt);
 	const [required, setRequired] = useState<boolean>(field.required);
-	const [type, setType] = useState<FieldType>(field.type as FieldType);
+	const [type, setType] = useState(field.type);
 	const [options, setOptions] = useState<string[] | undefined>(field.options);
 	const [customOption, setCustomOption] = useState("");
 
@@ -106,7 +104,7 @@ function EditField(props: EditFieldProps) {
 							<SelectValue placeholder={type} />
 						</SelectTrigger>
 						<SelectContent>
-							{FIELD_TYPES.map((val) => (
+							{fieldInputSchema.options.map((val) => (
 								<SelectItem key={crypto.randomUUID()} value={val}>
 									{val}
 								</SelectItem>
@@ -146,7 +144,7 @@ function EditField(props: EditFieldProps) {
 								>
 									<span>{opt}</span>
 									<button type='button' onClick={() => removeField(idx)}>
-										<XIcon className="hover:text-red-400 hover:cursor-pointer"/>
+										<XIcon className='hover:text-red-400 hover:cursor-pointer' />
 									</button>
 								</span>
 							))}

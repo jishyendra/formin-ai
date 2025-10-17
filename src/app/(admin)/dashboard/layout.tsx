@@ -24,32 +24,10 @@ type Props = {
 export default function DashboardLayout({ children }: Props) {
 	return (
 		<div>
-			{/* <SidebarProvider>
-				<FormSidebar />
-				<SidebarTrigger></SidebarTrigger> */}
 			{children}
-			{/* </SidebarProvider> */}
 		</div>
 	);
 }
-
-// const ListForms = () => {
-// 	const forms = [1, 2, 3, 4, 5];
-// 	return (
-// 		<>
-// 			{forms.map((form) => (
-// 				<Link
-// 					className='w-full overflow-x-hidden'
-// 					key={crypto.randomUUID()}
-// 					href={`/dashboard/form/${form}`}
-// 				>
-// 					Form {form}
-// 				</Link>
-// 			))}
-// 		</>
-// 	);
-// };
-
 const FormSidebar = () => {
 	return (
 		<Sidebar>

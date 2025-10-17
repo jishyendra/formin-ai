@@ -1,7 +1,5 @@
 "use client";
 import { useParams } from "next/navigation";
-import axios from "axios";
-import { BASE_URL } from "@/lib/utils";
 import useSwr from "swr";
 import Loader from "@/components/loader";
 import { getFormData } from "@/app/actions";
@@ -9,10 +7,6 @@ import { getFormData } from "@/app/actions";
 export default function Page() {
 	const formFetch = async (id: string) =>
 		await getFormData(id).then((res) => JSON.parse(res));
-	// axios.get(`${BASE_URL}/api/form/${id}`).then((res) => {
-	// 	console.log(res.data);
-	// 	return res.data;
-	// });
 	const { id } = useParams();
 	const { data, error, isLoading } = useSwr(id, formFetch);
 

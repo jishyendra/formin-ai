@@ -1,16 +1,24 @@
 import z from "zod";
 
+export const fieldInputSchema = z.enum([
+	"text",
+	"email",
+	"number",
+	"date",
+	"checkbox",
+	"radio",
+	"select",
+	"mobile",
+	"link",
+	"longtext",
+	"file",
+]);
+
+export type FieldInputType = z.infer<typeof fieldInputSchema>;
+
 const fieldSchema = z.object({
 	name: z.string(),
-	type: z.enum([
-		"text",
-		"email",
-		"number",
-		"date",
-		"checkbox",
-		"radio",
-		"select",
-	]),
+	type: fieldInputSchema,
 	prompt: z.string(),
 	required: z.boolean(),
 	options: z.array(z.string()).optional(),
