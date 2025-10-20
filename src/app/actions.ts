@@ -23,15 +23,16 @@ export async function addNewForm(form: Form) {
 	}
 }
 
-export async function postResponse(formId: string, data: FormData) {
+export async function postResponse(prevState: any, formData: FormData) {
 	try {
+		const formId = formData.get("_id");
 		const form = await Forms.findById(formId);
 		if (!form || form.archived || form.accepts === false) {
 			throw Error("Form is no longer taking responses");
 		}
-		console.log("user submiting response:", data);
-		await form.data.push(data);
-		await form.save();
+		console.log("user submiting response:", (formData));
+		// await form.data.push();
+		// await form.save();
 		return { success: true, status: 201 };
 	} catch (error) {
 		console.log(error);

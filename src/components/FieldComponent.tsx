@@ -11,123 +11,118 @@ import {
 	SelectValue,
 	SelectLabel,
 	Select,
+	Checkbox,
 } from "@/components/ui";
 
-type InputBoxProps = {
+type FieldComponentProps = {
 	field: FieldType;
 };
 
-export const FieldComponent = ({ field: f }: { field: FieldType }) => {
-	switch (f.type) {
+export const FieldComponent = ({ field }: FieldComponentProps) => {
+	switch (field.type) {
 		case "select":
-			return <SelectBox key={crypto.randomUUID()} field={f} />;
+			return <SelectBox field={field} />;
 		case "radio":
-			return <RadioBox key={crypto.randomUUID()} field={f} />;
+			return <RadioBox field={field} />;
 		case "checkbox":
-			return <CheckBox key={crypto.randomUUID()} field={f} />;
+			return <CheckBox field={field} />;
 		default:
-			return <InputBox key={crypto.randomUUID()} field={f} />;
+			return <InputBox field={field} />;
 	}
 };
 
-function InputLabel({ field: f }: InputBoxProps) {
+function FieldLabel({ field, label }: { field: FieldType; label: string }) {
 	return (
-		<Label className='mt-4 mb-2 block font-medium' htmlFor={f.name}>
-			{f.name}
-			{f.required ? "*" : ""}
+		<Label className='mt-4 mb-2 block font-medium' htmlFor={field.name}>
+			{label}
+			{field.required && <span className='text-destructive'>*</span>}
 		</Label>
 	);
 }
 
-function InputBox({ field: f }: InputBoxProps) {
+function InputBox({ field }: FieldComponentProps) {
 	return (
 		<>
-			<Label className='mt-4 mb-2 block font-medium' htmlFor={f.name}>
-				{f.name}
-				{f.required ? "*" : ""}
-			</Label>
+			<FieldLabel field={field} label={field.name} />
 			<Input
-				name={f.name}
-				type={f.type}
-				placeholder={f.prompt}
-				required={f.required}
+				id={field.name}
+				name={field.name}
+				type={field.type}
+				placeholder={field.prompt}
+				required={field.required}
 			/>
 		</>
 	);
 }
 
-function SelectBox({ field: f }: InputBoxProps) {
+function SelectBox({ field }: FieldComponentProps) {
 	return (
-		<Select>
-			<SelectGroup>
-				<Label className='mt-4 mb-2 block font-medium' htmlFor={f.name}>
-					{f.prompt}
-					{f.required ? "*" : ""}
-				</Label>
-				<SelectTrigger className='w-[180px]'>
-					<SelectValue placeholder={f.prompt} />
+		<div className='space-y-2'>
+			<FieldLabel field={field} label={field.prompt || field.name} />
+			<Select name={field.name} defaultValue=''>
+				<SelectTrigger className='w-full'>
+					<SelectValue placeholder={field.prompt || "Select an option"} />
 				</SelectTrigger>
 				<SelectContent>
-					{f.options?.map((val, idx) => (
-						<SelectItem key={crypto.randomUUID()} value={val}>
-							{val}
+					{field.options?.map((option) => (
+						<SelectItem key={`${field.name}-${option}`} value={option}>
+							{option}
 						</SelectItem>
 					))}
 				</SelectContent>
-			</SelectGroup>
-		</Select>
+			</Select>
+		</div>
 	);
 }
 
-function OptionsBox({ field: f }: InputBoxProps) {
+function CheckBox({ field }: FieldComponentProps) {
 	return (
-		<>
-			{f.options?.map((opt, idx) => (
-				<div className='grid grid-col-2' key={crypto.randomUUID()}>
-					<label>{opt}</label>
-					<input
-						name={f.name}
-						type='radio'
-						key={crypto.randomUUID()}
-						value={opt}
-						placeholder={opt}
-					></input>
-				</div>
-			))}
-		</>
-	);
-}
-
-function CheckBox({ field: f }: InputBoxProps) {
-	return (
-		<>
-			<Label className='mt-4 mb-2 block font-medium' htmlFor={f.name}>
-				{f.prompt}
-				{f.required ? "*" : ""}
-			</Label>
-			<OptionsBox field={f} />
-		</>
-	);
-}
-
-function RadioBox({ field: f }: InputBoxProps) {
-	return (
-		<RadioGroup defaultValue='none'>
-			<Label className='mt-4 mb-2 block font-medium' htmlFor={f.name}>
-				{f.prompt}
-				{f.required ? "*" : ""}
-			</Label>
-			{f.options?.map((opt) => {
-				return (
+		<fieldset className='space-y-3'>
+			<FieldLabel field={field} label={field.prompt || field.name} />
+			<div className='space-y-2'>
+				{field.options?.map((option) => (
 					<div
-						key={crypto.randomUUID()}
+						key={`${field.name}-${option}`}
 						className='flex items-center space-x-2'
 					>
-						<RadioGroupItem value={opt} id={opt} />
-						<Label htmlFor={opt}>{opt}</Label>
+						<Checkbox
+							id={`${field.name}-${option}`}
+							name={field.name}
+							value={option}
+						/>
+						<Label
+							htmlFor={`${field.name}-${option}`}
+							className='font-normal cursor-pointer'
+						>
+							{option}
+						</Label>
 					</div>
-				);
-			})}
-		</RadioGroup>
+				))}
+			</div>
+		</fieldset>
+	);
+}
+
+function RadioBox({ field }: FieldComponentProps) {
+	return (
+		<fieldset className='space-y-3'>
+			<FieldLabel field={field} label={field.prompt || field.name} />
+			<RadioGroup name={field.name} defaultValue=''>
+				{field.options?.map((option) => (
+					<div
+						key={`${field.name}-${option}`}
+						className='flex items-center space-x-2'
+					>
+						<RadioGroupItem value={option} id={`${field.name}-${option}`} />
+						<Label
+							htmlFor={`${field.name}-${option}`}
+							className='font-normal cursor-pointer'
+						>
+							{option}
+						</Label>
+					</div>
+				))}
+			</RadioGroup>
+		</fieldset>
 	);
 }
